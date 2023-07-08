@@ -13,3 +13,5 @@ pg_service: "postgresql"
 pg_basename: "postgresql-{{ pg_major_release }}"
 pg_packages:
   - "{{ pg_basename }}"
+  - "{{ pg_basename }}-repmgr"
+  - barman-cli

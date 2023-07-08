@@ -42,7 +42,61 @@
     service: postgresql
     state: restarted
 
-# users
+- name: Create SSH dir
+  ansible.builtin.file:
+    dest: "~postgres/.ssh/"
+    owner: postgres
+    mode: 0700
+    state: directory
+
+- name: Create SSH key
+  community.crypto.openssh_keypair:
+    path: "~postgres/.ssh/id_ed25519"
+    type: ed25519
+    owner: postgres
+
+- name: Slurp key
+  ansible.builtin.slurp:
+    src: "~postgres/.ssh/id_ed25519.pub"
+  register: sshpubkey
+
+- name: Debug key
+  ansible.builtin.debug:
+    msg: "Key at {{ ansible_hostname }}: {{ sshpubkey['content'] | b64decode }}"
+
+- name: Create SSH dir postgres
+  ansible.builtin.file:
+    dest: "~barman/.ssh/"
+    owner: barman
+    mode: 0700
+    state: directory
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['bm'] }}"
+
+- name: HushHush
+  ansible.builtin.copy:
+    dest: "~barman/.hushlogin"
+    owner: barman
+    mode: 0700
+    content: ""
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['bm'] }}"
+
+- name: Pass key to authorized keys
+  ansible.builtin.shell:
+    cmd: "echo {{ sshpubkey['content'] | b64decode | quote }} >> ~barman/.ssh/authorized_keys"
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['bm'] }}"
+
+- name: Fixup permissions
+  ansible.builtin.file:
+    path: "~barman/.ssh/authorized_keys"
+    owner: barman
+    mode: 0600
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['bm'] }}"
+
+# SQL users
 - name: create barman SQL user
   community.postgresql.postgresql_user:
     db: postgres
