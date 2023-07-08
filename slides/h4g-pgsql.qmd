@@ -30,8 +30,6 @@ format:
 ### Status + Outlook
 :::
 ::: {.column width="50%"}
-`https://is.gd/UWrPxU`
-![](img/url.png)
 
 - smtp: pb@sysfive.com
 - twitter: pb_double  ; mastodon: double_p
@@ -43,7 +41,7 @@ format:
 ## Infrastructure
 Network
 
-  - one prefix only: 2aff::cafe:cafe/56
+  - one prefix only: 2a0a:e5c0:2:12::/64
   - routed between nodes wont matter (FLW)
 
 VM: 1 vCPU; 4GB RAM; 10GB disk
@@ -53,39 +51,39 @@ VM: 1 vCPU; 4GB RAM; 10GB disk
   - `pg3` Data/Clusternode
   - `bm0` Backup / Datasink
 
-
+Everything ansible powered
 <!-- Page -->
 ## Debian IPv6 watch out
+n/a
 <!-- Page -->
 ## PostgreSQL setup
+
+- postgresql-14
+- barman (bm0)
+- repmgr (pgX)
+
 <!-- Page -->
 ## Replication: Streaming
 <!-- Page -->
 ## Replication: WAL shipping
+
+
 <!-- Page -->
 ## Backup/Restore (ssh forth/back)
+- ssh: barman@bm0 -> postgres@pgX 
+- postgres@pgX -> barman@bm0
+
 <!-- Page -->
 ## Questions & Cheers
-:::: {.columns}
-::: {.column width="30%"}
-![](img/url.png)
-:::
-::: {.column width="40%"}
-Thanks to:
+- https://github.com/double-p/ pgSQLv6-testing
 
-- hack4glarus
+Thanks to:
+- ungleich.ch
 - sysfive.com GmbH
-:::
-::: {.column width="30%"}
-Misc:
 
 - QUESTIONS
 - Meet: next time! ..and today til 15:xx
-:::
-::::
-:::{.callout-tip}
+
 Created with `Quarto / revealjs`  
-[presentation (+testing-config)](https://github.com/double-p/presentations/)
-`https://is.gd/UWrPxU`
-:::
+[presentation (+testing-config)](https://github.com/double-p/)
 

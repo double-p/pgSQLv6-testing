@@ -341,7 +341,6 @@
 <h3 id="backuprestore">Backup/Restore</h3>
 <h3 id="status-outlook">Status + Outlook</h3>
 </div><div class="column" style="width:50%;">
-<p><code>https://is.gd/UWrPxU</code> <img data-src="img/url.png"></p>
 <ul>
 <li>smtp: pb@sysfive.com</li>
 <li>twitter: pb_double ; mastodon: double_p</li>
@@ -355,7 +354,7 @@
 <h2>Infrastructure</h2>
 <p>Network</p>
 <ul>
-<li>one prefix only: 2aff::cafe:cafe/56</li>
+<li>one prefix only: 2a0a:e5c0:2:12::/64</li>
 <li>routed between nodes wont matter (FLW)</li>
 </ul>
 <p>VM: 1 vCPU; 4GB RAM; 10GB disk</p>
@@ -365,14 +364,12 @@
 <li><code>pg3</code> Data/Clusternode</li>
 <li><code>bm0</code> Backup / Datasink</li>
 </ul>
-<!-- Page -->
-</section>
-<section id="debian-ipv6-watch-out" class="slide level2">
-<h2>Debian IPv6 watch out</h2>
-<!-- Page -->
-</section>
-<section id="postgresql-setup-1" class="slide level2">
-<h2>PostgreSQL setup</h2>
+<p>Everything ansible powered <!-- Page --> ## Debian IPv6 watch out n/a <!-- Page --> ## PostgreSQL setup</p>
+<ul>
+<li>postgresql-14</li>
+<li>barman (bm0)</li>
+<li>repmgr (pgX)</li>
+</ul>
 <!-- Page -->
 </section>
 <section id="replication-streaming-1" class="slide level2">
@@ -385,43 +382,26 @@
 </section>
 <section id="backuprestore-ssh-forthback" class="slide level2">
 <h2>Backup/Restore (ssh forth/back)</h2>
+<ul>
+<li>ssh: barman@bm0 -&gt; postgres@pgX</li>
+<li>postgres@pgX -&gt; barman@bm0</li>
+</ul>
 <!-- Page -->
 </section>
 <section id="questions-cheers" class="slide level2">
 <h2>Questions &amp; Cheers</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><img data-src="img/url.png"></p>
-</div><div class="column" style="width:40%;">
-<p>Thanks to:</p>
 <ul>
-<li>hack4glarus</li>
-<li>sysfive.com GmbH</li>
+<li>https://github.com/double-p/ pgSQLv6-testing</li>
 </ul>
-</div><div class="column" style="width:30%;">
-<p>Misc:</p>
+<p>Thanks to: - ungleich.ch - sysfive.com GmbH</p>
 <ul>
 <li>QUESTIONS</li>
 <li>Meet: next time! ..and today til 15:xx</li>
 </ul>
-</div>
-</div>
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
 <p>Created with <code>Quarto / revealjs</code><br>
-<a href="https://github.com/double-p/presentations/">presentation (+testing-config)</a> <code>https://is.gd/UWrPxU</code></p>
-</div>
-</div>
-</div>
-<p><img src="img/sysfive.jpg" class="slide-logo"></p>
-<div class="footer footer-default">
+<a href="https://github.com/double-p/">presentation (+testing-config)</a></p>
+
+<img src="img/sysfive.jpg" class="slide-logo r-stretch"><div class="footer footer-default">
 <p>hack4glarus 2023 - Diesbach - pgsql/IPv6</p>
 </div>
 </section>
