@@ -25,6 +25,10 @@
       ansible.builtin.debug:
         msg: "CHECK: {{ hostvars[item].ansible_hostname }} ; {{ hostvars[item].inventory_hostname_short }}"
       loop: "{{ groups['pg'] }}"
+    - name: ipv6 prefixing
+      ansible.builtin.debug:
+        msg: "{{ (hostvars[item].ansible_default_ipv6.address + '/' + hostvars[item].ansible_default_ipv6.prefix) | ansible.utils.ipaddr('network/prefix') }}"
+      loop: "{{ groups['pg'] }}"
 
   roles:
     - role: barman
