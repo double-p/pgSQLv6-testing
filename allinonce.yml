@@ -1,0 +1,30 @@
+---
+- name: install basics
+  hosts: all
+
+  vars:
+
+  pre_tasks:
+    - name: Generate locales
+      community.general.locale_gen:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ locales_gen }}"
+
+- name: install pgsql on pgX
+  hosts: pg
+
+  roles:
+    - role: pgsql
+
+- name: install barman on bmx
+  hosts: bm
+
+  pre_tasks:
+    - name: check vars
+      ansible.builtin.debug:
+        msg: "CHECK: {{ hostvars[item].ansible_hostname }} ; {{ hostvars[item].inventory_hostname_short }}"
+      loop: "{{ groups['pg'] }}"
+
+  roles:
+    - role: barman

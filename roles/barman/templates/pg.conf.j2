@@ -1,0 +1,19 @@
+[{{ hostvars[item].inventory_hostname_short }}]
+; testing only
+;active = false
+
+description =  "{{ hostvars[item].inventory_hostname_short }} - testv6"
+
+conninfo = host={{ hostvars[item].inventory_hostname_short }} user=barman dbname=postgres
+
+; db=postgres is whole cluster (?)
+streaming_conninfo = host={{ hostvars[item].inventory_hostname_short }} user=streaming_barman dbname=postgres
+
+backup_method = postgres
+streaming_archiver = on
+slot_name = barman_{{ hostvars[item].inventory_hostname_short }}
+create_slot = auto
+
+retention_policy = 'RECOVERY WINDOW OF 4 WEEKS'
+; PATH setting for this server
+path_prefix = "/usr/lib/postgresql/14/bin"

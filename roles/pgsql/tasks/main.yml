@@ -1,0 +1,59 @@
+---
+- name: Following packages will be installed
+  ansible.builtin.debug:
+    msg: " {{ depend_pkg }}"  # leading space to force one-liner
+
+- name: Install dependency packages
+  ansible.builtin.package:
+    name: "{{ depend_pkg }}"
+    state: present
+
+- block:
+    - name: PostgreSQL repo key
+      apt_key:
+        url: "{{ pg_deb_key }}"
+        state: present
+    - name: PostgreSQL repo in sources
+      apt_repository:
+        repo: "{{ pg_deb_repo }}"
+        state: present
+        filename: 'postgresqldotorg'
+    - name: PostgreSQL packages are installed
+      apt:
+        name: "{{ pg_packages }}"
+        state: present
+        update_cache: true
+
+# config
+- name: ACL configuration
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/{{ pg_major_release }}/main/pg_hba.conf"
+
+- name: Configure listen_addresses
+  ansible.builtin.lineinfile:
+    dest: /etc/postgresql/{{ pg_major_release }}/main/postgresql.conf
+    regexp: "listen_addresses ="
+    line: "listen_addresses = '*'"
+    state: present
+
+- name: Restart pgsql for HBA/listen change
+  ansible.builtin.service:
+    service: postgresql
+    state: restarted
+
+# users
+- name: create barman SQL user
+  community.postgresql.postgresql_user:
+    db: postgres
+    name: barman
+    password: man1bar
+    role_attr_flags: SUPERUSER
+  tags: ['never', 'users']
+- name: create barman streaming user
+  community.postgresql.postgresql_user:
+    db: postgres
+    name: streaming_barman
+    password: man1bar
+    role_attr_flags: "REPLICATION,LOGIN"
+  tags: ['never', 'users']

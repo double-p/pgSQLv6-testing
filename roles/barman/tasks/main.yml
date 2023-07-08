@@ -1,0 +1,77 @@
+---
+- name: Following packages will be installed
+  ansible.builtin.debug:
+    msg: " {{ depend_pkg }}"  # leading space to force one-liner
+
+- name: Install dependency packages
+  ansible.builtin.package:
+    name: "{{ depend_pkg }}"
+    state: present
+
+- block:
+    - name: PostgreSQL repo key
+      apt_key:
+        url: "{{ pg_deb_key }}"
+        state: present
+    - name: PostgreSQL repo in sources
+      apt_repository:
+        repo: "{{ pg_deb_repo }}"
+        state: present
+        filename: 'postgresqldotorg'
+    - name: PostgreSQL packages are installed
+      apt:
+        name: "{{ pg_packages }}"
+        state: present
+        update_cache: true
+
+- name: Barman hostconfigs
+  ansible.builtin.template:
+    src: pg.conf.j2
+    dest: "/etc/barman.d/{{ hostvars[item].inventory_hostname_short }}.conf"
+  loop: "{{ groups['pg'] }}"
+
+- name: Create SSH dir
+  ansible.builtin.file:
+    dest: "~barman/.ssh/"
+    owner: barman
+    mode: 0700
+    state: directory
+
+- name: Create SSH key
+  community.crypto.openssh_keypair:
+    path: "~barman/.ssh/id_ed25519"
+    type: ed25519
+    owner: barman
+
+- name: Slurp key
+  ansible.builtin.slurp:
+    src: "~barman/.ssh/id_ed25519.pub"
+  register: sshpubkey
+
+- name: Create SSH dir postgres
+  ansible.builtin.file:
+    dest: "~postgres/.ssh/"
+    owner: postgres
+    mode: 0700
+    state: directory
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['pg'] }}"
+
+- name: HushHush
+  ansible.builtin.copy:
+    dest: "~postgres/.hushlogin"
+    owner: postgres
+    mode: 0700
+    content: ""
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['pg'] }}"
+
+- name: Pass key to authorized keys
+  ansible.builtin.copy:
+    dest: "~postgres/.ssh/authorized_keys"
+    content: "{{ sshpubkey['content'] | b64decode }}"
+    mode: 0600
+    owner: postgres
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['pg'] }}"
+

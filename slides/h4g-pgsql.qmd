@@ -1,0 +1,91 @@
+---
+title: "PostgreSQL replication/backup+restore with IPv6-only"
+author: "Philipp Bühler, sysfive.com GmbH"
+date: 'hack4glarus - Diesbach - Jul, 9th, 2023'
+format:
+  revealjs:
+    theme: [league, style.scss]
+    menu: true
+    slide-number: true
+    preview-links: auto
+    show-slide-number: speaker
+    slide-tone: false
+    transition: fade
+    transition-speed: slow
+    background-transition: convex
+    footer: "hack4glarus 2023 - Diesbach - pgsql/IPv6"
+    logo: img/sysfive.jpg
+---
+## What's ahead
+
+:::: {.columns}
+::: {.column width="50%"}
+
+### Infrastructure
+### Debian IPv6
+### PostgreSQL setup
+### Replication: Streaming
+### Replication: WAL shipping
+### Backup/Restore
+### Status + Outlook
+:::
+::: {.column width="50%"}
+`https://is.gd/UWrPxU`
+![](img/url.png)
+
+- smtp: pb@sysfive.com
+- twitter: pb_double  ; mastodon: double_p
+- matrix/irc: double-p
+:::
+::::
+
+<!-- Page -->
+## Infrastructure
+Network
+
+  - one prefix only: 2aff::cafe:cafe/56
+  - routed between nodes wont matter (FLW)
+
+VM: 1 vCPU; 4GB RAM; 10GB disk
+
+  - `pg1` Data/Clusternode
+  - `pg2` Data/Clusternode
+  - `pg3` Data/Clusternode
+  - `bm0` Backup / Datasink
+
+
+<!-- Page -->
+## Debian IPv6 watch out
+<!-- Page -->
+## PostgreSQL setup
+<!-- Page -->
+## Replication: Streaming
+<!-- Page -->
+## Replication: WAL shipping
+<!-- Page -->
+## Backup/Restore (ssh forth/back)
+<!-- Page -->
+## Questions & Cheers
+:::: {.columns}
+::: {.column width="30%"}
+![](img/url.png)
+:::
+::: {.column width="40%"}
+Thanks to:
+
+- hack4glarus
+- sysfive.com GmbH
+:::
+::: {.column width="30%"}
+Misc:
+
+- QUESTIONS
+- Meet: next time! ..and today til 15:xx
+:::
+::::
+:::{.callout-tip}
+Created with `Quarto / revealjs`  
+[presentation (+testing-config)](https://github.com/double-p/presentations/)
+`https://is.gd/UWrPxU`
+:::
+

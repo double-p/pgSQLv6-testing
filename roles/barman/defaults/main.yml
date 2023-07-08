@@ -1,0 +1,14 @@
+---
+depend_pkg: 
+  - gpg
+  - python3-apt
+  - ack
+  - jq
+  - cron
+pg_deb_key: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+pg_deb_repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
+pg_major_release: 14
+pg_basename: "postgresql-{{ pg_major_release }}"
+pg_packages:
+  - postgresql-client-common
+  - barman
