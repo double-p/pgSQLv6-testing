@@ -19,6 +19,7 @@
 
   roles:
     - role: pgsql
+    - role: repmgr
 
 - name: install barman on bmx
   hosts: bm
