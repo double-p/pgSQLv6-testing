@@ -1,4 +1,4 @@
 local all all trust
-host all all {{ ansible_default_ipv6.address }}/{{ ansible_default_ipv6.prefix }} trust
-host replication all {{ ansible_default_ipv6.address }}/{{ ansible_default_ipv6.prefix }} trust
-hostssl all all {{ ansible_default_ipv6.address }}/{{ ansible_default_ipv6.prefix }} trust
+host all all {{ prefix6 }} trust
+host replication all {{ prefix6 }} trust
+hostssl all all {{ prefix6 }} trust
