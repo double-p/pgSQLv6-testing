@@ -91,10 +91,14 @@ Handling:
 - barman -> postgres (receive WAL stream)
 - repmgr -> barman (fetch WALs + basebackup)
 :::
+
+Do not forget .pgpass if not using `trust` in pg_hba.conf #untested
 <!-- Page -->
 ## Helpers:
 :::{.callout-important title="Not orking"}
 - pgloader; likely "only" a connstring issue (GH issue since 09/2018+06/2019 ..)
+
+only needed for loading testdata, not replica/backup operations itself
 :::
 
 
