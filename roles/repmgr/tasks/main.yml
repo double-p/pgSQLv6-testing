@@ -21,6 +21,11 @@
     name: repmgr
     owner: repmgr
 
+- name: Sudoers
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/postgres
+    content: "postgres ALL = NOPASSWD:ALL"
+  
 # SQL users
 - name: create repmgr user
   community.postgresql.postgresql_user:

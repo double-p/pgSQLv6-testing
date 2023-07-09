@@ -10,3 +10,7 @@ restore_command='/usr/bin/barman-wal-restore -U barman bm0 pg1 %f %p'
 pg_bindir='/usr/lib/postgresql/{{ pg_major_release}}/bin'
 log_file='/var/log/repmgr.log'
 use_replication_slots=true
+service_start_command   = 'sudo systemctl start postgresql'
+service_stop_command    = 'sudo systemctl stop postgresql'
+service_restart_command = 'sudo systemctl restart postgresql'
+service_reload_command  = 'sudo systemctl reload postgresql'

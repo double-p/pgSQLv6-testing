@@ -93,8 +93,11 @@ Handling:
 :::
 
 Do not forget .pgpass if not using `trust` in pg_hba.conf #untested
+
+
 <!-- Page -->
-## Helpers:
+## Helpers
+
 :::{.callout-important title="Not orking"}
 - pgloader; likely "only" a connstring issue (GH issue since 09/2018+06/2019 ..)
 
@@ -103,17 +106,37 @@ only needed for loading testdata, not replica/backup operations itself
 
 
 <!-- Page -->
-## Backup/Restore (ssh forth/back)
+## cluster status
+```{.python code-line-numbers="4-6"}
+postgres@pg1:~$ repmgr cluster show
+ ID | Name | Role    | Status    | Upstream | ...
+----+------+---------+-----------+----------+-...
+ 1  | pg1  | primary | * running |          | ...
+ 2  | pg2  | standby |   running | pg1      | ...
+ 3  | pg3  | standby |   running | pg1      | ...
+```
+
+
+<!-- Page -->
+## Failover/Backup/Restore
 ::: {.callout-tip title="Working"}
 - ssh: barman@bm0 -> postgres@pgX 
 - postgres@pgX -> barman@bm0
 :::
+For certain failover scenarios, `postgres` has to connect from
+any pgX to any other pgX. Use one key for all..?
+
+Also postgres needs passwd-less `sudo` for these commands.
+
+Planned:
+`repmgr standby switchover --siblings-follow #--dry-run`
 
 <!-- Page -->
-## Questions & Cheers
+## Outlook, Questions & Cheers
 :::: {.columns}
 
 ::: {.column width="50%"}
+- Pgpool-II ?
 - https://github.com/double-p/ pgSQLv6-testing
 :::
 
