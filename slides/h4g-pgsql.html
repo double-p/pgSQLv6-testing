@@ -334,7 +334,6 @@
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="infrastructure">Infrastructure</h3>
-<h3 id="debian-ipv6">Debian IPv6</h3>
 <h3 id="postgresql-setup">PostgreSQL setup</h3>
 <h3 id="replication-streaming">Replication: Streaming</h3>
 <h3 id="replication-wal-shipping">Replication: WAL shipping</h3>
@@ -364,42 +363,124 @@
 <li><code>pg3</code> Data/Clusternode</li>
 <li><code>bm0</code> Backup / Datasink</li>
 </ul>
-<p>Everything ansible powered <!-- Page --> ## Debian IPv6 watch out n/a <!-- Page --> ## PostgreSQL setup</p>
+<p>Installation ansible powered</p>
+<!-- Page -->
+</section>
+<section id="postgresql-setup-1" class="slide level2">
+<h2>PostgreSQL setup</h2>
 <ul>
-<li>postgresql-14</li>
-<li>barman (bm0)</li>
-<li>repmgr (pgX)</li>
+<li><p>postgresql-14</p></li>
+<li><p>repmgr (pgX)</p></li>
+<li><p>barman (bm0)</p></li>
+<li><p>pgLoader (bm0)</p></li>
+<li><p>Follow this series https://www.youtube.com/watch?v=XFawRsNdfok&amp;list=PLpNYlUeSK_rnanDUNr4KiTlkLTmtqK-sQ</p></li>
 </ul>
 <!-- Page -->
 </section>
-<section id="replication-streaming-1" class="slide level2">
-<h2>Replication: Streaming</h2>
+<section id="postgresql-barman" class="slide level2">
+<h2>PostgreSQL / barman</h2>
+<ul>
+<li>Install/Configuration from ansible playbook</li>
+</ul>
+<p>Handling:</p>
+<ul>
+<li><code>barman check pg1</code></li>
+<li><code>barman receive-wal pg1</code></li>
+<li><code>barman backup pg1</code></li>
+<li><code>barman switch-wal --force --archive pg1</code></li>
+</ul>
 <!-- Page -->
 </section>
-<section id="replication-wal-shipping-1" class="slide level2">
-<h2>Replication: WAL shipping</h2>
+<section id="postgresql-repmgr" class="slide level2">
+<h2>PostgreSQL / repmgr</h2>
+<ul>
+<li>Install/Configuration from ansible playbook</li>
+</ul>
+<p>Handling:</p>
+<ul>
+<li><code>repmgr primary register</code> (pg1)</li>
+<li><code>repmgr -h pg1 -U repmgr -d repmgr -F standby clone #--dry-run</code> (pg2+3)</li>
+<li><code>repmgr standby register</code> (pg2+3)</li>
+<li><code>repmgr cluster show</code></li>
+</ul>
+<!-- Page -->
+</section>
+<section id="replication" class="slide level2">
+<h2>Replication:</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>postgresql streaming</li>
+<li>barman -&gt; postgres (receive WAL stream)</li>
+<li>repmgr -&gt; barman (fetch WALs + basebackup)</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Page -->
+</section>
+<section id="helpers" class="slide level2">
+<h2>Helpers:</h2>
+<div class="callout callout-important callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>pgloader; likely “only” a connstring issue (GH issue since 09/2018+06/2019 ..)</li>
+</ul>
+</div>
+</div>
+</div>
 <!-- Page -->
 </section>
 <section id="backuprestore-ssh-forthback" class="slide level2">
 <h2>Backup/Restore (ssh forth/back)</h2>
+<div class="callout callout-tip callout-captioned callout-style-default">
+<div class="callout-body">
+<div class="callout-caption">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
 <ul>
 <li>ssh: barman@bm0 -&gt; postgres@pgX</li>
 <li>postgres@pgX -&gt; barman@bm0</li>
 </ul>
+</div>
+</div>
+</div>
 <!-- Page -->
 </section>
 <section id="questions-cheers" class="slide level2">
 <h2>Questions &amp; Cheers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>https://github.com/double-p/ pgSQLv6-testing</li>
 </ul>
+</div><div class="column" style="width:50%;">
 <p>Thanks to: - ungleich.ch - sysfive.com GmbH</p>
+</div>
+</div>
 <ul>
 <li>QUESTIONS</li>
-<li>Meet: next time! ..and today til 15:xx</li>
+<li>Meet: next time! ..and today til 15:xx Created with <code>Quarto / revealjs</code><br>
+<a href="https://github.com/double-p/">presentation (+testing-config)</a></li>
 </ul>
-<p>Created with <code>Quarto / revealjs</code><br>
-<a href="https://github.com/double-p/">presentation (+testing-config)</a></p>
 
 <img src="img/sysfive.jpg" class="slide-logo r-stretch"><div class="footer footer-default">
 <p>hack4glarus 2023 - Diesbach - pgsql/IPv6</p>

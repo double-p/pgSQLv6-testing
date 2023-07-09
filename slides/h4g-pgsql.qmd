@@ -22,7 +22,6 @@ format:
 ::: {.column width="50%"}
 
 ### Infrastructure
-### Debian IPv6
 ### PostgreSQL setup
 ### Replication: Streaming
 ### Replication: WAL shipping
@@ -51,39 +50,79 @@ VM: 1 vCPU; 4GB RAM; 10GB disk
   - `pg3` Data/Clusternode
   - `bm0` Backup / Datasink
 
-Everything ansible powered
-<!-- Page -->
-## Debian IPv6 watch out
-n/a
+Installation ansible powered
+
 <!-- Page -->
 ## PostgreSQL setup
 
 - postgresql-14
-- barman (bm0)
 - repmgr (pgX)
+- barman (bm0)
+- pgLoader (bm0)
+
+- Follow this series https://www.youtube.com/watch?v=XFawRsNdfok&list=PLpNYlUeSK_rnanDUNr4KiTlkLTmtqK-sQ
 
 <!-- Page -->
-## Replication: Streaming
+## PostgreSQL / barman
+- Install/Configuration from ansible playbook
+
+Handling:
+
+- `barman check pg1`
+- `barman receive-wal pg1`
+- `barman backup pg1`
+- `barman switch-wal --force --archive pg1` 
+
 <!-- Page -->
-## Replication: WAL shipping
+## PostgreSQL / repmgr
+- Install/Configuration from ansible playbook
+
+Handling:
+
+- `repmgr primary register` (pg1)
+- `repmgr -h pg1 -U repmgr -d repmgr -F standby clone #--dry-run` (pg2+3)
+- `repmgr standby register` (pg2+3)
+- `repmgr cluster show`
+
+<!-- Page -->
+## Replication:
+::: {.callout-tip title="Working"}
+- postgresql streaming
+- barman -> postgres (receive WAL stream)
+- repmgr -> barman (fetch WALs + basebackup)
+:::
+<!-- Page -->
+## Helpers:
+:::{.callout-important title="Not orking"}
+- pgloader; likely "only" a connstring issue (GH issue since 09/2018+06/2019 ..)
+:::
 
 
 <!-- Page -->
 ## Backup/Restore (ssh forth/back)
+::: {.callout-tip title="Working"}
 - ssh: barman@bm0 -> postgres@pgX 
 - postgres@pgX -> barman@bm0
+:::
 
 <!-- Page -->
 ## Questions & Cheers
-- https://github.com/double-p/ pgSQLv6-testing
+:::: {.columns}
 
+::: {.column width="50%"}
+- https://github.com/double-p/ pgSQLv6-testing
+:::
+
+::: {.column width="50%"}
 Thanks to:
 - ungleich.ch
 - sysfive.com GmbH
+:::
+
+::::
 
 - QUESTIONS
 - Meet: next time! ..and today til 15:xx
-
 Created with `Quarto / revealjs`  
 [presentation (+testing-config)](https://github.com/double-p/)
 
