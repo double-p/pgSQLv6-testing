@@ -128,8 +128,13 @@ any pgX to any other pgX. Use one key for all..?
 
 Also postgres needs passwd-less `sudo` for these commands.
 
+<!-- Page -->
 Planned:
 `repmgr standby switchover --siblings-follow #--dry-run`
+Unplanned:
+`repmgr standby promote --siblings-follow`
+Replica Rejoin (offline):
+`repmgr node rejoin -d 'connection info' --force-rewind`
 
 <!-- Page -->
 ## Outlook, Questions & Cheers
